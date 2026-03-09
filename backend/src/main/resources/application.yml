@@ -6,9 +6,9 @@ spring:
     name: kaoyan-platform
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/kaoyan_platform?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai
-    username: root
-    password: root
+    url: jdbc:mysql://154.37.221.179:3306/kaoyan?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai
+    username: kaoyan
+    password: Jy217810wyt
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT+8

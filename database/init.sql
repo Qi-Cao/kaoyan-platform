@@ -2,9 +2,9 @@
 -- 创建日期: 2026-03-09
 
 -- 创建数据库
-CREATE DATABASE IF NOT EXISTS kaoyan_platform DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE DATABASE IF NOT EXISTS kaoyan DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
-USE kaoyan_platform;
+USE kaoyan;
 
 -- 1. 用户表
 CREATE TABLE IF NOT EXISTS users (
