@@ -5,13 +5,12 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.kaoyan.entity.School;
 import com.kaoyan.mapper.SchoolMapper;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
 public class SchoolService extends ServiceImpl<SchoolMapper, School> {
     
     public Page<School> getSchoolPage(int pageNum, int pageSize, String province, String keyword) {
@@ -30,6 +29,13 @@ public class SchoolService extends ServiceImpl<SchoolMapper, School> {
     }
     
     public List<String> getAllProvinces() {
-        return this.baseMapper.getAllProvinces();
+        List<String> provinces = new ArrayList<>();
+        List<School> schools = this.list();
+        for (School school : schools) {
+            if (school.getProvince() != null && !provinces.contains(school.getProvince())) {
+                provinces.add(school.getProvince());
+            }
+        }
+        return provinces;
     }
 }
