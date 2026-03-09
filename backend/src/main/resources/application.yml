@@ -4,6 +4,8 @@ server:
 spring:
   application:
     name: kaoyan-platform
+  main:
+    allow-bean-definition-overriding: true
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://154.37.221.179:3306/kaoyan?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai
