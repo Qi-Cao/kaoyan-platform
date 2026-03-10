@@ -3,8 +3,11 @@ package com.kaoyan.controller;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.kaoyan.common.Result;
 import com.kaoyan.entity.Resource;
+import com.kaoyan.entity.User;
 import com.kaoyan.service.ResourceService;
+import com.kaoyan.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -14,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 public class ResourceController {
     
     private final ResourceService resourceService;
+    private final UserService userService;
     
     @GetMapping
     public Result<Page<Resource>> getResources(
@@ -31,7 +35,9 @@ public class ResourceController {
     }
     
     @PostMapping
-    public Result<Resource> addResource(@RequestBody Resource resource) {
+    public Result<Resource> addResource(Authentication authentication, @RequestBody Resource resource) {
+        User user = userService.getUserByUsername(authentication.getName());
+        resource.setUserId(user.getId());
         resourceService.addResource(resource);
         return Result.success(resource);
     }

@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import java.util.Collections;
 
 @Service
@@ -64,5 +65,44 @@ public class UserService extends ServiceImpl<UserMapper, User> implements UserDe
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("username", username);
         return this.getOne(queryWrapper);
+    }
+    
+    public Page<User> getUserPage(int pageNum, int pageSize, Integer role, Integer status) {
+        Page<User> page = new Page<>(pageNum, pageSize);
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        if (role != null) {
+            queryWrapper.eq("role", role);
+        }
+        if (status != null) {
+            queryWrapper.eq("status", status);
+        }
+        queryWrapper.orderByDesc("created_at");
+        return this.page(page, queryWrapper);
+    }
+    
+    public boolean updateUserStatus(Long id, Integer status) {
+        User user = this.getById(id);
+        if (user != null) {
+            user.setStatus(status);
+            return this.updateById(user);
+        }
+        return false;
+    }
+    
+    public User createTeacher(String username, String password, String email) {
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("username", username);
+        if (this.count(queryWrapper) > 0) {
+            throw new RuntimeException("用户名已存在");
+        }
+        
+        User user = new User();
+        user.setUsername(username);
+        user.setPassword(passwordEncoder.encode(password));
+        user.setEmail(email);
+        user.setRole(2);
+        user.setStatus(1);
+        this.save(user);
+        return user;
     }
 }

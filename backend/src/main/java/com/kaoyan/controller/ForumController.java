@@ -3,9 +3,11 @@ package com.kaoyan.controller;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.kaoyan.common.Result;
 import com.kaoyan.entity.Forum;
-import com.kaoyan.entity.ForumReply;
+import com.kaoyan.entity.User;
 import com.kaoyan.service.ForumService;
+import com.kaoyan.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 public class ForumController {
     
     private final ForumService forumService;
+    private final UserService userService;
     
     @GetMapping
     public Result<Page<Forum>> getForums(
@@ -32,7 +35,12 @@ public class ForumController {
     }
     
     @PostMapping
-    public Result<Forum> createForum(@RequestBody Forum forum) {
+    public Result<Forum> createForum(Authentication authentication, @RequestBody Forum forum) {
+        User user = userService.getUserByUsername(authentication.getName());
+        forum.setUserId(user.getId());
+        forum.setViewCount(0);
+        forum.setReplyCount(0);
+        forum.setStatus(1);
         forumService.save(forum);
         return Result.success(forum);
     }

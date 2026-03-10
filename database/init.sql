@@ -142,9 +142,10 @@ CREATE TABLE IF NOT EXISTS resource_reviews (
     FOREIGN KEY (reviewer_id) REFERENCES users(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='资料审核表';
 
--- 插入默认管理员账号 (密码: admin123，使用BCrypt加密)
+-- 插入默认管理员账号 (密码: admin123)
+-- 使用BCrypt加密: admin123 -> $2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi
 INSERT INTO users (username, password, email, role, status) 
-VALUES ('admin', '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8lE9lBOsl7iAt6Z5EH', 'admin@kaoyan.com', 3, 1);
+VALUES ('admin', '$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'admin@kaoyan.com', 3, 1);
 
 -- 插入默认管理员详情
 INSERT INTO user_profiles (user_id, real_name, avatar)

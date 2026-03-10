@@ -1,25 +1,25 @@
 <template>
   <div>
-    <router-link to="/schools" class="text-primary-600 hover:underline mb-4 inline-block">
-      ← 返回院校库
+    <router-link to="/schools" class="text-primary-500 hover:text-primary-600 transition-colors mb-4 inline-block">
+      &larr; 返回院校库
     </router-link>
     
     <div v-if="school" class="card">
       <div class="flex items-start space-x-6">
-        <div class="w-24 h-24 bg-primary-100 rounded-xl flex items-center justify-center text-4xl">
+        <div class="w-24 h-24 bg-primary-50 rounded-xl flex items-center justify-center text-4xl">
           🏫
         </div>
         <div class="flex-1">
           <h1 class="text-3xl font-bold text-gray-800">{{ school.name }}</h1>
-          <p class="text-gray-500 mt-2">{{ school.province }} · {{ school.city }}</p>
+          <p class="text-gray-400 mt-2">{{ school.province }} · {{ school.city }}</p>
           <div class="flex items-center mt-4 space-x-6">
             <div>
-              <span class="text-gray-500 text-sm">排名</span>
-              <p class="text-2xl font-bold text-primary-600">#{{ school.rank }}</p>
+              <span class="text-gray-400 text-sm">排名</span>
+              <p class="text-2xl font-bold text-primary-500">#{{ school.rank }}</p>
             </div>
             <div>
-              <span class="text-gray-500 text-sm">录取率</span>
-              <p class="text-2xl font-bold text-green-600">{{ school.admissionRate }}%</p>
+              <span class="text-gray-400 text-sm">录取率</span>
+              <p class="text-2xl font-bold text-green-500">{{ school.admissionRate }}%</p>
             </div>
           </div>
         </div>
@@ -27,7 +27,7 @@
       
       <div class="mt-8">
         <h2 class="text-xl font-bold text-gray-800 mb-4">院校简介</h2>
-        <p class="text-gray-600 leading-relaxed">{{ school.description || '暂无简介' }}</p>
+        <p class="text-gray-500 leading-relaxed">{{ school.description || '暂无简介' }}</p>
       </div>
     </div>
   </div>

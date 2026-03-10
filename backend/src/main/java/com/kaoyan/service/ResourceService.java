@@ -39,4 +39,14 @@ public class ResourceService extends ServiceImpl<ResourceMapper, Resource> {
         resource.setStatus(0); // 待审核
         return this.save(resource);
     }
+    
+    public Page<Resource> getAllResourcePage(int pageNum, int pageSize, Integer status) {
+        Page<Resource> page = new Page<>(pageNum, pageSize);
+        QueryWrapper<Resource> queryWrapper = new QueryWrapper<>();
+        if (status != null) {
+            queryWrapper.eq("status", status);
+        }
+        queryWrapper.orderByDesc("created_at");
+        return this.page(page, queryWrapper);
+    }
 }

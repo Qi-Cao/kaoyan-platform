@@ -2,8 +2,10 @@ package com.kaoyan.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -19,6 +21,7 @@ import java.util.Arrays;
 
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
     
     @Bean
@@ -44,13 +47,20 @@ public class SecurityConfig {
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and()
             .authorizeRequests()
+            // Public endpoints
             .antMatchers("/api/auth/**").permitAll()
-            .antMatchers("/api/schools/**").permitAll()
-            .antMatchers("/api/resources/**").permitAll()
-            .antMatchers("/api/forums/**").permitAll()
+            .antMatchers(HttpMethod.GET, "/api/schools/**").permitAll()
+            .antMatchers(HttpMethod.GET, "/api/resources/**").permitAll()
+            .antMatchers(HttpMethod.GET, "/api/forums/**").permitAll()
             .antMatchers("/api/notices").permitAll()
             .antMatchers("/api/categories").permitAll()
             .antMatchers("/api/forum-categories").permitAll()
+            .antMatchers(HttpMethod.GET, "/api/resource-comments").permitAll()
+            .antMatchers(HttpMethod.GET, "/api/forum-replies").permitAll()
+            .antMatchers("/uploads/**").permitAll()
+            // Admin endpoints
+            .antMatchers("/api/admin/**").hasAnyRole("ADMIN", "TEACHER")
+            // Authenticated endpoints
             .anyRequest().authenticated()
             .and()
             .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);

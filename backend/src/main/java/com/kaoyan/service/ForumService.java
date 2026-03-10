@@ -33,4 +33,23 @@ public class ForumService extends ServiceImpl<ForumMapper, Forum> {
         }
         return forum;
     }
+    
+    public Page<Forum> getAllForumPage(int pageNum, int pageSize, Integer status) {
+        Page<Forum> page = new Page<>(pageNum, pageSize);
+        QueryWrapper<Forum> queryWrapper = new QueryWrapper<>();
+        if (status != null) {
+            queryWrapper.eq("status", status);
+        }
+        queryWrapper.orderByDesc("created_at");
+        return this.page(page, queryWrapper);
+    }
+    
+    public boolean updateForumStatus(Long id, Integer status) {
+        Forum forum = this.getById(id);
+        if (forum != null) {
+            forum.setStatus(status);
+            return this.updateById(forum);
+        }
+        return false;
+    }
 }

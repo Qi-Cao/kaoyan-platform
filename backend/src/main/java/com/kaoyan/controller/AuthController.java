@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
+
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
@@ -24,6 +26,7 @@ public class AuthController {
     private final AuthenticationManager authenticationManager;
     private final UserService userService;
     private final JwtUtil jwtUtil;
+    private final PasswordEncoder passwordEncoder;
     
     @PostMapping("/login")
     public Result<Map<String, Object>> login(@RequestBody LoginDTO loginDTO) {
@@ -40,15 +43,19 @@ public class AuthController {
             
             Map<String, Object> data = new HashMap<>();
             data.put("token", token);
-            data.put("user", Map.of(
-                "id", user.getId(),
-                "username", user.getUsername(),
-                "role", user.getRole()
-            ));
+            Map<String, Object> userMap = new HashMap<>();
+            userMap.put("id", user.getId());
+            userMap.put("username", user.getUsername());
+            userMap.put("role", user.getRole());
+            String roleName = user.getRole() == 1 ? "STUDENT" : 
+                             user.getRole() == 2 ? "TEACHER" : "ADMIN";
+            userMap.put("roleName", roleName);
+            data.put("user", userMap);
             
             return Result.success(data);
         } catch (Exception e) {
-            return Result.error("用户名或密码错误");
+            e.printStackTrace();
+            return Result.error("用户名或密码错误: " + e.getMessage());
         }
     }
     
@@ -72,5 +79,14 @@ public class AuthController {
         User user = userService.getUserByUsername(authentication.getName());
         user.setPassword(null);
         return Result.success(user);
+    }
+    
+    // 临时接口：生成 BCrypt 密码
+    @GetMapping("/hash")
+    public Result<String> generateHash(@RequestParam String password) {
+        String hash = passwordEncoder.encode(password);
+        System.out.println("Password: " + password);
+        System.out.println("Hash: " + hash);
+        return Result.success(hash);
     }
 }
