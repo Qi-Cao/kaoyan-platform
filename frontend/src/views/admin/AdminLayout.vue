@@ -10,10 +10,10 @@
         <p class="text-gray-400 text-sm mt-2">{{ authStore.user?.username }}</p>
       </div>
       <nav class="flex-1 py-4 overflow-y-auto">
-        <router-link v-if="authStore.isAdmin" to="/admin/dashboard" class="nav-item" active-class="nav-item-active">
+        <router-link v-if="authStore.isAdmin || authStore.userRole === 'TEACHER'" to="/admin/dashboard" class="nav-item" active-class="nav-item-active">
           <span class="mr-2">📊</span> 数据分析
         </router-link>
-        <router-link v-if="authStore.isAdmin" to="/admin/users" class="nav-item" active-class="nav-item-active">
+        <router-link v-if="authStore.isAdmin || authStore.userRole === 'TEACHER'" to="/admin/users" class="nav-item" active-class="nav-item-active">
           <span class="mr-2">👥</span> 用户管理
         </router-link>
         <router-link v-if="authStore.isAdmin" to="/admin/teachers" class="nav-item" active-class="nav-item-active">

@@ -148,11 +148,32 @@ export const getAdminUsers = (params) => {
 }
 
 export const updateUserStatus = (id, status) => {
-  return api.put(`/admin/users/${id}/status`, { status })
+  return api.put(`/user/${id}/status`, { status })
 }
 
 export const deleteUser = (id) => {
-  return api.delete(`/admin/users/${id}`)
+  return api.delete(`/user/${id}`)
+}
+
+// 用户管理（教师/管理员）
+export const getUserList = (params) => {
+  return api.get('/user/list', { params })
+}
+
+export const getUserDetail = (id) => {
+  return api.get(`/user/${id}`)
+}
+
+export const updateUser = (id, data) => {
+  return api.put(`/user/${id}`, data)
+}
+
+export const resetUserPassword = (id) => {
+  return api.put(`/user/${id}/reset-password`)
+}
+
+export const updateUserPassword = (id, newPassword) => {
+  return api.put(`/user/${id}/password`, { newPassword })
 }
 
 // 教师管理

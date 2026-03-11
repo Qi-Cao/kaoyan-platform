@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mvn -q exec:java -Dexec.mainClass=\"com.kaoyan.TestPassword\" -Dexec.classpathScope=test)"
+    ]
+  }
+}

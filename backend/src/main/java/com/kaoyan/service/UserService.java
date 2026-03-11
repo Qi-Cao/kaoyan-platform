@@ -14,6 +14,10 @@ import org.springframework.stereotype.Service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.List;
+import java.util.ArrayList;
 
 @Service
 @RequiredArgsConstructor
@@ -95,7 +99,7 @@ public class UserService extends ServiceImpl<UserMapper, User> implements UserDe
         if (this.count(queryWrapper) > 0) {
             throw new RuntimeException("用户名已存在");
         }
-        
+
         User user = new User();
         user.setUsername(username);
         user.setPassword(passwordEncoder.encode(password));
@@ -104,5 +108,31 @@ public class UserService extends ServiceImpl<UserMapper, User> implements UserDe
         user.setStatus(1);
         this.save(user);
         return user;
+    }
+
+    /**
+     * 获取用户列表（分页）
+     */
+    public Map<String, Object> getUserList(Integer pageNum, Integer pageSize, String username, Integer role) {
+        Page<User> page = new Page<>(pageNum, pageSize);
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        if (username != null && !username.isEmpty()) {
+            queryWrapper.like("username", username);
+        }
+        if (role != null) {
+            queryWrapper.eq("role", role);
+        }
+        queryWrapper.orderByDesc("created_at");
+
+        Page<User> result = this.page(page, queryWrapper);
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("records", result.getRecords());
+        data.put("total", result.getTotal());
+        data.put("pages", result.getPages());
+        data.put("current", result.getCurrent());
+        data.put("size", result.getSize());
+
+        return data;
     }
 }

@@ -90,8 +90,7 @@ const routes = [
       {
         path: 'users',
         name: 'AdminUsers',
-        component: AdminUsers,
-        meta: { adminOnly: true }
+        component: AdminUsers
       },
       {
         path: 'teachers',
